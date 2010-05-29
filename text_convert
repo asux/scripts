@@ -1,0 +1,76 @@
+#!/bin/sh
+# Copyright (c) Alexander Ulyanitsky <a.ulyanitsky@gmail.com>
+# License: GNU GPL v2
+
+from="CP1251"
+to="UTF-8"
+recursive=0
+pattern="*"
+verbose=0
+pretend=0
+
+source ${HOME}/lib/functions
+
+function usage() {
+	echo -e "$0 [options] [file1] [file2] ...
+where options are:
+	-f from     from encoding
+	-t to       to encoding
+	-r          recursive
+	-p pattern  pattern for find
+	-P          pretend, do not convert really
+	-h          show this help
+	-v          be verbose"
+}
+
+[ $# == 0 ] && usage && exit 1
+
+OPTERR=0
+
+while getopts 'f:t:rp:Phv' opt; do
+	case ${opt} in
+		f) from=${OPTARG};;
+		t) to=${OPTARG};;
+		r) recursive=1;;
+		p) pattern=${OPTARG};;
+		P) pretend=1;;
+		v) verbose=1;;
+		h) usage; exit 0;;
+		:) echo "Option '-$OPTARG' requires an argument." >&2; exit 1;;
+		\?) echo "Invalid option: '-$OPTARG'" >&2; exit 1;;
+	esac
+done
+
+[[ ${verbose} == 1 ]] && echo -e " \e[01;32m*\e[m from \e[01;38m$from\e[m
+ \e[01;32m*\e[m to \e[01;38m$to\e[m
+ \e[01;32m*\e[m recursive \e[01;38m$recursive\e[m
+ \e[01;32m*\e[m pretend \e[01;38m$pretend\e[m
+ \e[01;32m*\e[m pattern \e[01;38m$pattern\e[m"
+
+shift $(( ${OPTIND} - 1 ))
+
+files="$*"
+
+if [[ -z "${files}" ]]; then
+	files="${PWD}"
+fi
+
+[[ ${verbose} == 1 ]] && echo -e " \e[01;32m*\e[m file list \e[01;38m${files}\e[m"
+
+total=0
+for file in "${files}"; do
+	if [[ -d "${file}" ]]; then
+		if [[ ${recursive} == 1 ]]; then
+			for item in $(find "${file}" -name "${pattern}" -type f); do
+				function_convert ${item} && total=$(( ${total} + 1 ))
+			done
+		else
+			[[ ${verbose} == 1 ]] && echo -e "\e[01;33m${file}\e[m is a directory, use '-r' option for recursive"
+		fi
+	else
+		if [[ -f "${file}" ]]; then
+			function_convert "${file}" && total=$(( ${total} + 1 ))
+		fi
+	fi
+done
+[[ ${verbose} == 1 ]] && echo -e "\e[00;02mTotal\e[m: \e[01;33m${total}\e[m"
