@@ -1,0 +1,33 @@
+#!/bin/sh
+# Copyright (c) Alexander Ulyantsky <a.ulyanitsky@gmail.com>
+# License: GNU GPL v2
+
+str_mul () {
+    for i in {1..$2}; do
+        echo -ne "$1"
+    done
+    return 0
+}
+log () {
+    echo -ne "$1"
+    echo -ne "$(str_mul ' ' $(( 80 - ${#1} )))"
+    echo -e "$2"
+    return 0
+}
+function_convert () {
+    local conv_res='-1'
+    if [[ ${pretend} == 0 ]]; then
+        out=$(iconv --from ${from} --to ${to} --output "$1.tmp" --silent "$1" 2>&1 1>/dev/null && rm "$1" && mv "$1.tmp" "$1")
+        conv_res=$?    
+    fi
+    if [[ ${verbose} == 1 ]]; then
+        case ${conv_res} in
+            0) log "[\033[01;32mOK\033[m]" "$1";;
+            1) log "[\033[01;31mFailed\033[m]" "$1";;
+            -1) log "[\033[01;33mPretend\033[m]" "$1";;
+            *) log "[\033[01;33m??\033[m]" "$1";;
+        esac
+    fi
+    [[ ${conv_res} == -1 ]] && conv_res=0
+    return ${conv_res}
+}

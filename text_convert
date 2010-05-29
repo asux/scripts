@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Copyright (c) Alexander Ulyanitsky <a.ulyanitsky@gmail.com>
 # License: GNU GPL v2
 
@@ -9,7 +9,9 @@ pattern="*"
 verbose=0
 pretend=0
 
-source ${HOME}/lib/functions
+script_dir="$(dirname $(readlink -f ${BASH_SOURCE[0]}))"
+
+source "${script_dir}/functions"
 
 function usage() {
 	echo -e "$0 [options] [file1] [file2] ...
