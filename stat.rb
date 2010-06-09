@@ -25,6 +25,11 @@ Q = {
         10 => 0.48,
     }
 }
+class Float
+    def to_s
+        Kernel.format('%e', self)
+    end
+end
 x = ARGV.map {|str| str.gsub(',', '.').to_f}
 n = x.count
 v = n - 1

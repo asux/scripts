@@ -60,7 +60,7 @@ fi
 [[ ${verbose} == 1 ]] && echo -e " \e[01;32m*\e[m file list \e[01;38m${files}\e[m"
 
 total=0
-for file in "${files}"; do
+for file in ${files}; do
 	if [[ -d "${file}" ]]; then
 		if [[ ${recursive} == 1 ]]; then
 			for item in $(find "${file}" -name "${pattern}" -type f); do
