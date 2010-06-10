@@ -26,8 +26,12 @@ Q = {
     }
 }
 class Float
-    def to_s
-        Kernel.format('%e', self)
+    def as_exponential
+        if self > 1e-1 && self < 1e1
+            self.to_s
+        else
+            Kernel.format('%e', self)
+        end
     end
 end
 x = ARGV.map {|str| str.gsub(',', '.').to_f}
@@ -64,8 +68,8 @@ res = {'\bar{x}' => xm, 'S^2' => s2, 'S' => s, 'S_r' => sr, 'S_x' => sx, '\Delta
 res.each { |key, value| puts "#{key} = #{value}" }
 latex = "\\LaTeX\n"
 latex << "$x$ & $#{res.keys.join '$ & $'}$\\\\\n"
-latex << "#{x[0]} & #{res.values.join ' & '}\\\\\n".gsub('.', ',')
-x[1..-1].each {|i| latex << "#{i} & #{[].fill('&',0,res.count-1).join(' ')}\\\\\n".gsub('.',',')}
+latex << "#{x[0].as_exponential} & #{res.values.map {|i| i.as_exponential}.join ' & '}\\\\\n".gsub('.', ',')
+x[1..-1].each {|i| latex << "#{i.as_exponential} & #{[].fill('&',0,res.count-1).join(' ')}\\\\\n".gsub('.',',')}
 latex << "\\LaTeX\n"
 puts latex.gsub(/([0-9,.]+)e([\-+0-9]+)/, '$\1 \\cdot 10^{\2}$')
 puts "n = #{n}; P = #{p}; t_{P=#{p}, n=#{n}} = #{tp[p][n]}; \\varepsilon = #{e}\\%".gsub('.', ',')
