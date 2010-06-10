@@ -62,9 +62,10 @@ dx = tp[p][n]*sx
 e = dx*100/xm
 res = {'\bar{x}' => xm, 'S^2' => s2, 'S' => s, 'S_r' => sr, 'S_x' => sx, '\Delta x' => dx}
 res.each { |key, value| puts "#{key} = #{value}" }
-puts '\LaTeX'
-puts "$x$ & $#{res.keys.join '$ & $'}$\\\\"
-puts "#{x[0]} & #{res.values.join ' & '}\\\\".gsub('.', ',')
-x[1..-1].each {|i| puts "#{i} & #{[].fill('&',0,res.count-1).join(' ')}\\\\".gsub('.',',')}
-puts '\LaTeX'
+latex = "\\LaTeX\n"
+latex << "$x$ & $#{res.keys.join '$ & $'}$\\\\\n"
+latex << "#{x[0]} & #{res.values.join ' & '}\\\\\n".gsub('.', ',')
+x[1..-1].each {|i| latex << "#{i} & #{[].fill('&',0,res.count-1).join(' ')}\\\\\n".gsub('.',',')}
+latex << "\\LaTeX\n"
+puts latex.gsub(/([0-9,.]+)e([\-+0-9]+)/, '$\1 \\cdot 10^{\2}$')
 puts "n = #{n}; P = #{p}; t_{P=#{p}, n=#{n}} = #{tp[p][n]}; \\varepsilon = #{e}\\%".gsub('.', ',')
