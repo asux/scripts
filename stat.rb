@@ -27,7 +27,7 @@ Q = {
 }
 class Float
     def as_exponential
-        if self > 1e-1 && self < 1e1
+        if self > 0.1 && self < 10
             self.to_s
         else
             Kernel.format('%e', self)
@@ -45,7 +45,7 @@ new_x = []
 x.each_with_index {|xi, i| q[xi] = i<v ? (xi - x[i+1]).abs/R : (xi - x[i-1]).abs/R}
 x.each do |k|
     value = q[k]
-    if value < Q[p][n]
+    if value <= Q[p][n]
         pref = '+'
         new_x << k
     else
@@ -64,12 +64,25 @@ sx = s/(Math.sqrt n)
 sr = s/xm
 dx = tp[p][n]*sx
 e = dx*100/xm
-res = {'\bar{x}' => xm, 'S^2' => s2, 'S' => s, 'S_r' => sr, 'S_x' => sx, '\Delta x' => dx}
+res = {'\bar{x}' => xm, 'S^2' => s2, 'S' => s, 'S_{r}' => sr, 'S_{x}' => sx, '\Delta x' => dx}
 res.each { |key, value| puts "#{key} = #{value}" }
-latex = "\\LaTeX\n"
-latex << "$x$ & $#{res.keys.join '$ & $'}$\\\\\n"
-latex << "#{x[0].as_exponential} & #{res.values.map {|i| i.as_exponential}.join ' & '}\\\\\n".gsub('.', ',')
-x[1..-1].each {|i| latex << "#{i.as_exponential} & #{[].fill('&',0,res.count-1).join(' ')}\\\\\n".gsub('.',',')}
-latex << "\\LaTeX\n"
-puts latex.gsub(/([0-9,.]+)e([\-+0-9]+)/, '$\1 \\cdot 10^{\2}$')
-puts "n = #{n}; P = #{p}; t_{P=#{p}, n=#{n}} = #{tp[p][n]}; \\varepsilon = #{e}\\%".gsub('.', ',')
+latex = <<-LATEX
+\\begin{table}
+\\centering
+\\caption{$n = #{n}; P = #{p}; t_{P=#{p}, n=#{n}} = #{tp[p][n]}; \\varepsilon = #{e}\\%$}
+\\label{tab:stat}
+\\begin{tabular}{|#{[].fill('c',0,res.keys.count+1).join('|')}|}
+\\hline
+$x$ & $#{res.keys.join '$ & $'}$\\\\
+\\hline
+#{x[0].as_exponential} & #{res.values.map {|i| i.as_exponential}.join ' & '}\\\\
+LATEX
+x[1..-1].each {|i| latex << "#{i.as_exponential} & #{[].fill('&',0,res.count-1).join(' ')}\\\\\n"}
+latex = latex.gsub(/([0-9,.]+)e([\-+0-9]+)/, '$\1 \\cdot 10^{\2}$')
+latex << <<-LATEX
+\\hline
+\\end{tabular}
+\\end{table}
+$x = #{xm.as_exponential} \\pm #{dx.as_exponential}$
+LATEX
+puts latex.gsub('.', ',')
