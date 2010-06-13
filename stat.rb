@@ -45,7 +45,7 @@ new_x = []
 x.each_with_index {|xi, i| q[xi] = i<v ? (xi - x[i+1]).abs/R : (xi - x[i-1]).abs/R}
 x.each do |k|
     value = q[k]
-    if value <= Q[p][n]
+    if Q[p][n] == nil || value <= Q[p][n]
         pref = '+'
         new_x << k
     else
@@ -77,12 +77,13 @@ $x$ & $#{res.keys.join '$ & $'}$\\\\
 \\hline
 #{x[0].as_exponential} & #{res.values.map {|i| i.as_exponential}.join ' & '}\\\\
 LATEX
-x[1..-1].each {|i| latex << "#{i.as_exponential} & #{[].fill('&',0,res.count-1).join(' ')}\\\\\n"}
 latex = latex.gsub(/([0-9,.]+)e([\-+0-9]+)/, '$\1 \\cdot 10^{\2}$')
+x[1..-1].each {|i| latex << "#{i.as_exponential} & #{[].fill('&',0,res.count-1).join(' ')}\\\\\n"}
 latex << <<-LATEX
 \\hline
 \\end{tabular}
 \\end{table}
 $x = #{xm.as_exponential} \\pm #{dx.as_exponential}$
 LATEX
+latex = latex.gsub(/([0-9,.]+)e([\-+0-9]+)/, '\1 \\cdot 10^{\2}')
 puts latex.gsub('.', ',')
