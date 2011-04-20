@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 unless ARGV.first
-  puts "Usage: ruby #{$0} money_in"
+  puts "Usage: ruby #{$0} money_in [my_commission]"
   exit 1
 end
 money_in = ARGV.first.to_f
