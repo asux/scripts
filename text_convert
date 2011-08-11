@@ -9,7 +9,8 @@ pattern="*"
 verbose=0
 pretend=0
 
-script_dir="$(dirname $(readlink -f ${BASH_SOURCE[0]}))"
+script_dir="$(dirname $0)"
+[ -z ${script_dir} ] && script_dir="${HOME}/scripts"
 
 source "${script_dir}/functions"
 
