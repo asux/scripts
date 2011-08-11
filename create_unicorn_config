@@ -1,0 +1,18 @@
+#!/bin/bash
+
+user="git"
+group="git"
+www_root="/var/www"
+rails_project="rails-project"
+unicorn_conf="unicorn.conf.rb"
+templates_dir="$(dirname $0)/templates"
+unicorn_template=${templates_dir}/${unicorn_conf}
+
+project_name=$1
+config_dir="${www_root}/${project_name}/config"
+mkdir -p ${config_dir}
+conf_file="${config_dir}/${unicorn_conf}"
+
+cp -v ${unicorn_template} ${conf_file}
+sed -i "s/${rails_project}/${project_name}/g" ${conf_file}
+chown -v ${user}:${group} ${config_dir} ${conf_file}

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+sites_available="/etc/nginx/sites-available.d"
+sites_enabled="/etc/nginx/sites-enabled.d"
+rails_project="rails-project"
+templates_dir="$(dirname $0)/templates"
+rails_template=${templates_dir}/${rails_project}.conf
+
+project_name=$1
+conf_name=${project_name}.conf
+conf_file=${sites_available}/${conf_name}
+
+cp -v ${rails_template} ${conf_file}
+sed -i "s/${rails_project}/${project_name}/g" ${conf_file}
+ln -vnsf ${conf_file} ${sites_enabled}/${conf_name}
