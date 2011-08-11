@@ -1,5 +1,3 @@
-ENV['RAILS_ENV'] = 'production'
-
 # Sample verbose configuration file for Unicorn (not Rack)
 #
 # This configuration file documents many features of Unicorn
