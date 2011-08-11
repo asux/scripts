@@ -1,0 +1,13 @@
+#!/bin/bash
+dir=$@
+[ -z ${dir} ] && dir="."
+for fn in $(find ${dir} -name '*.erb'); do
+  local src=${fn}
+  local dst=${fn/%erb/haml}
+  echo -n "Converting ${src} to ${dst} ... "
+  if html2haml --erb --unix-newlines ${src} ${dst}; then
+    echo "OK"
+  else
+    echo "ERROR"
+  fi
+done
