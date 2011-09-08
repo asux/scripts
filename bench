@@ -1,0 +1,15 @@
+#!/bin/sh
+usage () {
+  echo "Usage: $0 domain concurrency number path"
+  exit 1
+}
+domain=$1
+url="http://${domain}/"
+concurrency=$2
+number=$3
+path=$4
+dir="~/Documents/benchmarks/${domain}/${path}"
+filename="${dir}/benchmarck-c:${concurrency}-n:${number}"
+[ $# == 0 ] && usage
+mkdir -p ${dir}
+/usr/sbin/ab -c ${concurrency} -n ${number} -g ${filename}.plot ${url} | tee ${filename}.txt
