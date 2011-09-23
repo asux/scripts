@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 unless ARGV.first
-  puts "Usage: ruby #{$0} money_in [my_commission]"
+  puts "Usage: ruby #{$0} money_in [my_commission] [money_sms]"
   exit 1
 end
 money_in = ARGV.first.to_f
-money_sms = 0.16
+money_sms = (ARGV[2] || 0.16).to_f
 webmoney_commission = 0.8 / 100
-my_commission = (ARGV[1] || 1.5).to_f / 100
+my_commission = (ARGV[1] || 2.0).to_f / 100
 turbosms = ((money_in * (1.0 - my_commission)) / ((1.0 +  webmoney_commission) * money_sms)).to_i
 webmonwy_payment = money_sms * turbosms
 benefit = money_in - ( webmonwy_payment * (1.0 + webmoney_commission))
