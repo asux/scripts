@@ -54,8 +54,12 @@ class Ignatiev
     "%-28s"
   end
 
+  def antigate_out
+    antigate * (1.0 +  webmoney_commission)
+  end
+
   def turbosms_money
-    money_in - antigate
+    money_in - antigate_out
   end
 
   def turbosms_money_with_benefit
@@ -81,12 +85,15 @@ class Ignatiev
   def print
     puts "#{key_format}: %.2f" % ["Money Input", money_in]
     puts "#{key_format}: %.2f" % ["Antigate payment", antigate]
+    puts "#{key_format}: %.2f" % ["Antigate payment w/ WebMoney", antigate_out]
     puts "#{key_format}: %.2f" % ["TurboSMS money", turbosms_money]
     puts "#{key_format}: %.2f" % ["TurboSMS money w/ benefit", turbosms_money_with_benefit]
     puts "#{key_format}: %.2f" % ["SMS cost", sms_cost]
     puts "#{key_format}: %i" % ["TurboSMS count", turbosms]
+    puts "#{key_format}: %.2f" % ["TurboSMS payment", webmoney_payment]
+    puts "#{key_format}: %.2f" % ["TurboSMS payment w/ WebMoney", webmoney_payment * (1.0 + webmoney_commission)]
     puts "#{key_format}: %i" % ["TurboSMS lost", (turbosms_without_my - turbosms)]
-    puts "#{key_format}: %.2f (%.2f%%)" % ["Webmoney benefit", webmoney_commission * webmoney_payment, webmoney_commission * 100]
+    # puts "#{key_format}: %.2f (%.2f%%)" % ["Webmoney benefit", webmoney_commission * webmoney_payment, webmoney_commission * 100]
     puts "#{key_format}: %.2f (%.2f%%)" % ["My benefit", benefit, benefit * 100 / turbosms_money]
   end
 
