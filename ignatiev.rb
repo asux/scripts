@@ -19,7 +19,7 @@ class Ignatiev
     options = OpenStruct.new
 
     options.money_in = args.shift.to_f
-    options.sms_cost = 0.16
+    options.sms_cost = 0.14
     options.webmoney_commission = 0.8 / 100
     options.my_commission = 2.5 / 100
     options.antigate = 0.0
