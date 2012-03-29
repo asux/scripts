@@ -2,8 +2,8 @@
 dir=$@
 [ -z ${dir} ] && dir="."
 for fn in $(find ${dir} -name '*.erb'); do
-  local src=${fn}
-  local dst=${fn/%erb/haml}
+  src=${fn}
+  dst=${fn/%erb/haml}
   echo -n "Converting ${src} to ${dst} ... "
   if html2haml --erb --unix-newlines ${src} ${dst}; then
     echo "OK"
