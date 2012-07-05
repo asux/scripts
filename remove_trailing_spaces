@@ -1,0 +1,2 @@
+#!/bin/sh
+sed -i 's/\s\+$//g' */**/*.(rb|erb|haml|js|coffee|css|sass|scss)
