@@ -1,2 +1,2 @@
 #!/bin/sh
-exec /opt/sublime-text/sublime_text $@ & 2>&1 1>/dev/null
+exec /usr/bin/sublime-text $@ & 2>&1 1>/dev/null
