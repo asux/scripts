@@ -1,0 +1,5 @@
+#!/bin/bash
+# ~/scripts/open_txmt
+URI=$1
+URI=${URI/txmt/subl}
+open_subl $URI

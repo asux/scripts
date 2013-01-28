@@ -1,0 +1,3 @@
+#!/bin/sh
+git config user.name 'Alex Ulianytskyi'
+git config user.email a.ulyanitsky@gmail.com
