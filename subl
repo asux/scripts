@@ -1,2 +1,2 @@
 #!/bin/sh
-exec /usr/bin/sublime-text $@ & 2>&1 1>/dev/null
+exec sublime-text-2 $@ & 2>&1 1>/dev/null
