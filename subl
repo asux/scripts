@@ -1,2 +1,6 @@
 #!/bin/sh
-exec sublime-text-2 $@ & 2>&1 1>/dev/null
+if [ ${OSTYPE} == 'linux' ]; then
+    exec sublime-text-2 $@ & 2>&1 1>/dev/null
+else
+    exec sublime-text-2 $@
+fi
