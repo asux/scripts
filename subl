@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ ${OSTYPE} == "linux*" ]; then
-    exec sublime-text-2 "$@" & 2>&1 1>/dev/null
+    exec sublime-text "$@" & 2>&1 1>/dev/null
 else
-    exec sublime-text-2 "$@"
+    exec sublime-text "$@"
 fi
