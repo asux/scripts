@@ -1,0 +1,4 @@
+#!/bin/sh
+client=$1
+ip=$2
+storm edit "sg-${client}-0" "core@${ip}" --o "ProxyCommand=ssh ubuntu@staging-bastion -W %h:%p" --o "StrictHostKeyChecking=no"

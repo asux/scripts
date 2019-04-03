@@ -1,0 +1,5 @@
+#!/bin/sh
+daemon=$1
+action=$2
+[ -z ${action} ] && action='load'
+launchctl ${action} ~/Library/LaunchAgents/homebrew.mxcl.${daemon}.plist

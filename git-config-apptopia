@@ -1,3 +1,0 @@
-#!/bin/sh
-git config user.name 'Alex Ulyanitsky'
-git config user.email a.ulyanitsky@apptopia.com
